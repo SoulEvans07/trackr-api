@@ -16,7 +16,7 @@ module.exports = function (objectrepository) {
             return next();
         }
 
-        // * query user by id, populate ingredient list
+        // * query user by id
         userModel.findOne({ _id: id }).exec(function (err, user) {
             // * check for errors or empty result
             if (err) {
