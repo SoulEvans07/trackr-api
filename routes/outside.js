@@ -1,4 +1,3 @@
-var errorHandler = require('../middlewares/generic/common').errorHandler;
 var answer = require('../middlewares/generic/common').answer;
 var register = require('../middlewares/users/register');
 
@@ -15,7 +14,6 @@ module.exports = function (app) {
      */
     app.post('/register',
         register(objectRepository),
-        errorHandler(),
         answer("POST /register")
     );
 

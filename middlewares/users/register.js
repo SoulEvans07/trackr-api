@@ -23,8 +23,9 @@ module.exports = function (objectrepository) {
             email: req.body.email
         }, function (err, user) {
             if ((err) || (user !== null)) {
-                res.tpl.error.push('Your email address is already registered!');
-                return next();
+                var newErr = new Error('Your email address is already registered!');
+                newErr.stack += '\nCaused by: ' + err.stack;
+                return next(newErr);
             }
 
             // * Find the User by username
@@ -32,13 +33,13 @@ module.exports = function (objectrepository) {
                 username: req.body.username
             }, function (err, user) {
                 if ((err) || (user !== null)) {
-                    res.tpl.error.push('Your username is taken!');
-                    return next();
+                    var newErr = new Error('Username is taken!');
+                    newErr.stack += '\nCaused by: ' + err.stack;
+                    return next(newErr);
                 }
 
                 if (req.body.username.length < 3) {
-                    res.tpl.error.push('The username should be at least 3 characters!');
-                    return next();
+                    return next(new Error('The username should be at least 3 characters!'));
                 }
 
                 // * Create User
@@ -49,13 +50,15 @@ module.exports = function (objectrepository) {
                 // * Password Hashing
                 bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
                     if(err){
-                        res.tpl.error.push('Failed at salt generation!');
-                        return next();
+                        var newErr = new Error('Failed at salt generation!');
+                        newErr.stack += '\nCaused by: ' + err.stack;
+                        return next(newErr);
                     }
                     bcrypt.hash(req.body.password, salt, null, function(err, hash) {
                         if(err){
-                            res.tpl.error.push('Failed at password hash generation!');
-                            return next();
+                            var newErr = new Error('Failed at password hash generation!');
+                            newErr.stack += '\nCaused by: ' + err.stack;
+                            return next(newErr);
                         }
 
                         newUser.pwdhash = hash;

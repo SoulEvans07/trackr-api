@@ -24,25 +24,20 @@ function multiLine(string) {
 
 function answer(route){
     return function(req, res, next){
-        return res.send(
-        "<pre>" + route
+        var message = "<pre>" + route
         + "\n\nreq.params:\n" + JSON.stringify(req.params, null, 4)
         + "\n\nreq.body:\n" + JSON.stringify(req.body, null, 4)
         + "\n\nres.tpl:\n" + JSON.stringify(res.tpl, null, 4)
-        + "</pre>");
-    }
-}
+        + "</pre>";
 
-function errorHandler() {
-    return function(req, res, next){
-        res.tpl.error.forEach(function (error) {
-            console.error("[OWN] " + error);
-        });
-        return next();
+        if(res.tpl.error.length > 0){
+            return res.status(500).send('Houston, we had a problem!');
+        } else {
+            return res.send(message);
+        }
     }
 }
 
 module.exports.requireOption = requireOption;
 module.exports.multiLine = multiLine;
-module.exports.errorHandler = errorHandler;
 module.exports.answer = answer;

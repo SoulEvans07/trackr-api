@@ -7,10 +7,7 @@ module.exports = function (objectRepository) {
     return function (req, res, next) {
         userModel.find({}).exec(function (err, results) {
             if(err){
-                res.tpl.error.push("cannot find users");
-                console.log("cannot find users");
-                // return next();
-                throw err;
+                return next(new Error('Cannot find users!'));
             }
 
             res.tpl.users = results.sort(compareUsers);

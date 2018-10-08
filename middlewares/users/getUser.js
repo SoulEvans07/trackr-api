@@ -10,22 +10,20 @@ module.exports = function (objectrepository) {
         // * validate id in url
         try {
             id = new mongoose.Types.ObjectId(req.params.uid);
-        } catch (e){
-            res.tpl.error.push('invalid user id: ' + req.params.uid);
-            res.tpl.error.push('(' + e.message + ')');
-            return next();
+        } catch (err){
+            var newErr = new Error('Invalid user id: ' + req.params.uid);
+            newErr.stack += '\nCaused by: ' + err.stack;
+            return next(newErr);
         }
 
         // * query user by id
         userModel.findOne({ _id: id }).exec(function (err, user) {
             // * check for errors or empty result
             if (err) {
-                res.tpl.error.push(JSON.stringify(err));
-                return next();
+                return next(err);
             }
             if (!user) {
-                res.tpl.error.push('no user on id: ' + JSON.stringify(id));
-                return next();
+                return next(new Error('No user on id: ' + JSON.stringify(id)));
             }
 
             // * put user on res.tpl

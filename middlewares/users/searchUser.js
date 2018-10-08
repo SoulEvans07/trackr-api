@@ -13,8 +13,7 @@ module.exports = function (objectrepository) {
         userModel.findOne({ email: req.body.email }).exec(function (err, user) {
             // * check for errors or empty result
             if (err) {
-                res.tpl.error.push(JSON.stringify(err));
-                return next();
+                return next(err);
             }
 
             // * put user on res.tpl
