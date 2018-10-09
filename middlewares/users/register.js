@@ -24,7 +24,8 @@ module.exports = function (objectrepository) {
         }, function (err, user) {
             if ((err) || (user !== null)) {
                 var newErr = new Error('Your email address is already registered!');
-                newErr.stack += '\nCaused by: ' + err.stack;
+                if(err)
+                    newErr.stack += '\nCaused by: ' + err.stack;
                 return next(newErr);
             }
 

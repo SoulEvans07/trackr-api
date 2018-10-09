@@ -11,8 +11,7 @@ module.exports = function (objectrepository) {
         try {
             id = new mongoose.Types.ObjectId(req.params.uid);
         } catch (err){
-            var newErr = new Error('Invalid user id: ' + req.params.uid);
-            newErr.stack += '\nCaused by: ' + err.stack;
+            var newErr = new Error('Invalid user id: ' + req.params.uid + ' (Caused by: ' + err.message + ')');
             return next(newErr);
         }
 
