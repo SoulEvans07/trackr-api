@@ -1,39 +1,30 @@
 var userModel = require('../models/userModel');
+var answer = require('../middlewares/generic/common').answer;
 
-module.exports = function (app) {
+module.exports = function(app) {
 
     var objectRepository = {
         userModel: userModel
     };
 
-    app.get('/tasks',
-        function (req, res, next) {
-            return res.send("GET /tasks");
-        }
+    app.get('/api/tasks',
+        answer("GET /api/tasks")
     );
 
-    app.get('/task/:uid',
-        function (req, res, next) {
-            return res.send("GET /task/" + req.params.uid);
-        }
+    app.get('/api/task/:uid',
+        answer("GET /api/task/:uid")
     );
 
-    app.post('/task/new',
-        function (req, res, next) {
-            return res.send("POST /task/new<br>"+ JSON.stringify(req.body));
-        }
+    app.post('/api/task/new',
+        answer("POST /api/task/new")
     );
 
-    app.post('/task/:uid/update',
-        function (req, res, next) {
-            return res.send("POST /task/" + req.params.uid + "/update<br>"+ JSON.stringify(req.body));
-        }
+    app.post('/api/task/:uid/update',
+        answer("POST /task/:uid/update")
     );
 
-    app.post('/task/:uid/delete',
-        function (req, res, next) {
-            return res.send("POST /task/" + req.params.uid + "/delete");
-        }
+    app.post('/api/task/:uid/delete',
+        answer("POST /task/:uid/delete")
     );
 
 };

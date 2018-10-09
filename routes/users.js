@@ -12,26 +12,26 @@ module.exports = function (app) {
         userModel: userModel
     };
 
-    app.post('/user/:uid/update',
-        answer('POST /user/:uid/update')
+    app.post('/api/user/:uid/update',
+        answer('POST /api/user/:uid/update')
     );
 
-    app.post('/user/:uid/delete',
-        answer('POST /user/:uid/delete')
+    app.post('/api/user/:uid/delete',
+        answer('POST /api/user/:uid/delete')
     );
 
-    app.get('/user/:uid',
+    app.get('/api/user/:uid',
         getUser(objectRepository),
-        answer('GET /user/:uid')
+        answer('GET /api/user/:uid')
     );
 
-    app.post('/user/search',
+    app.post('/api/user/search',
         searchUser(objectRepository),
-        answer('POST /user/search')
+        answer('POST /api/user/search')
     );
 
-    app.get('/users',
+    app.get('/api/users',
         getUserList(objectRepository),
-        answer('GET /users')
+        answer('GET /api/users')
     );
 };

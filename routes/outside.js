@@ -12,24 +12,24 @@ module.exports = function (app) {
     };
 
     // * Login page
-    app.post('/login',
+    app.post('/api/login',
         login(objectRepository),
-        answer("POST /login")
+        answer("POST /api/login")
     );
 
     // * Logout
-    app.get('/logout',
+    app.get('/api/logout',
         logout(objectRepository),
         // function(req, res, next){
         //     res.redirect('/');
         // }
-        answer("GET /logout")
+        answer("GET /api/logout")
     );
 
     // * Registration
-    app.post('/register',
+    app.post('/api/register',
         register(objectRepository),
-        answer("POST /register")
+        answer("POST /api/register")
     );
 
 };
