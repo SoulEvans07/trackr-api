@@ -24,6 +24,6 @@ module.exports = function () {
         + '\n\nres.tpl:\n' + JSON.stringify(res.tpl, null, 4)
         + '</pre>';
 
-        return res.status(400).send(message);
+        return res.status(400).send(res.tpl.error);
     }
 }

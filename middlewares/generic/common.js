@@ -24,6 +24,8 @@ function multiLine(string) {
 
 function answer(route){
     return function(req, res, next){
+        return res.send(res.tpl);
+
         var message = "<pre>" + route
         + "\n\nreq.session:\n" + JSON.stringify(req.session, null, 4)
         + "\n\nreq.params:\n" + JSON.stringify(req.params, null, 4)
