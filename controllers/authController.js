@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const entities = require('html-entities').AllHtmlEntities;
-const bcrypt = require('bcrypt-nodejs');
 
 
 const User = require('../models/userModel');
@@ -13,9 +13,7 @@ const signToken = user => jwt.sign(
 );
 
 exports.login = async (req, res, next) => {
-    const user = req.body.email
-        ? await User.findOne({ email: req.body.email }).lean()
-        : await User.findOne({ username: req.body.username }).lean();
+    const user = await User.findOne({ username: req.body.username }).lean();
 
     if (!user)
         return res.status(404).send('User not found');
@@ -47,16 +45,6 @@ exports.authenticate = async (req, res, next) => {
     }
 };
 
-exports.requireAdmin = async (req, res, next) => {
-    let admin = res.currentUser.is_admin;
-    res.currentUser.is_admin = undefined;
-
-    if (!admin)
-        return res.status(403).send();
-
-    return next();
-};
-
 exports.refreshToken = async (req, res, next) => {
     let token = req.headers.authorization;
     try {
@@ -77,12 +65,6 @@ exports.refreshToken = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
     try {
-        if ((typeof req.body === 'undefined') || (typeof req.body.username === 'undefined') ||
-            (typeof req.body.password === 'undefined') || (typeof req.body.email === 'undefined') ||
-            (typeof req.body.native_language === 'undefined')) {
-            return next();
-        }
-
         if (req.body.username.length < 3) {
             console.error('The username should be at least 3 characters!');
             return res.status(500).send('The username should be at least 3 characters!');
@@ -93,16 +75,15 @@ exports.register = async (req, res, next) => {
             username: entities.encode(req.body.username),
             password: req.body.password,
             email: entities.encode(req.body.email),
-            native_language: entities.encode(req.body.native_language),
-            exp: 0,
-            is_admin: false
         });
 
         user = await user.save();
 
-        return res.status(200).send(_.omit(user, [ 'password' ]));
+        user.password = undefined;
+
+        return res.status(200).send(user);
     } catch (e) {
         console.error('Error creating user', e);
-        return res.status(500).send(e.message);
+        return res.status(500).send('Error creating user. Reason: ' + e);
     }
 };

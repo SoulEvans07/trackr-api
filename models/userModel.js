@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 
 const UserSchema = new Schema({
@@ -11,10 +11,11 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre('save', function (next) {
+    const SALT_FACTOR = 10;
     const user = this;
     if (user.isNew) {
         if (user.password) {
-            bcrypt.hash(user.password, 10, (err, hash) => {
+            bcrypt.hash(user.password, SALT_FACTOR, (err, hash) => {
                 if (err) {
                     console.error('Error saving user', user.email, err);
                     return next();
