@@ -1,9 +1,10 @@
-var Schema = require('mongoose').Schema;
-var db = require('../config/db');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-
-var Task = db.model('Task', {
+var TaskSchema = new Schema({
     // TODO: make Task model
+    name: String,
+    is_done: Boolean
 });
 
-module.exports = Task;
+module.exports = mongoose.model('Task', TaskSchema);

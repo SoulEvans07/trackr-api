@@ -1,37 +1,15 @@
-var answer = require('../middlewares/generic/common').answer;
+const express = require('express');
+const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 
-var getUserList = require('../middlewares/users/getUserList');
-var getUser = require('../middlewares/users/getUser');
-var searchUser = require('../middlewares/users/searchUser');
+const router = express.Router();
 
-var userModel = require('../models/userModel');
+// router.post('/list', userController.list);
 
-module.exports = function (app) {
+// router.post('/:id/update', userController.update);
 
-    var objectRepository = {
-        userModel: userModel
-    };
+// router.delete('/:id/delete', userController.delete);
 
-    app.post('/api/user/:uid/update',
-        answer('POST /api/user/:uid/update')
-    );
+// router.get('/:id/get', userController.get);
 
-    app.post('/api/user/:uid/delete',
-        answer('POST /api/user/:uid/delete')
-    );
-
-    app.get('/api/user/:uid',
-        getUser(objectRepository),
-        answer('GET /api/user/:uid')
-    );
-
-    app.post('/api/user/search',
-        searchUser(objectRepository),
-        answer('POST /api/user/search')
-    );
-
-    app.get('/api/users',
-        getUserList(objectRepository),
-        answer('GET /api/users')
-    );
-};
+module.exports = router;

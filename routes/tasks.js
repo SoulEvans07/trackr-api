@@ -1,30 +1,17 @@
-var userModel = require('../models/userModel');
-var answer = require('../middlewares/generic/common').answer;
+const express = require('express');
+const taskController = require('../controllers/taskController');
+const authController = require('../controllers/authController');
 
-module.exports = function(app) {
+const router = express.Router();
 
-    var objectRepository = {
-        userModel: userModel
-    };
+router.get('/list', taskController.list);
 
-    app.get('/api/tasks',
-        answer("GET /api/tasks")
-    );
+router.post('/new', taskController.new);
 
-    app.get('/api/task/:uid',
-        answer("GET /api/task/:uid")
-    );
+router.post('/:id/update', taskController.update);
 
-    app.post('/api/task/new',
-        answer("POST /api/task/new")
-    );
+// router.delete('/:id/delete', taskController.delete);
 
-    app.post('/api/task/:uid/update',
-        answer("POST /task/:uid/update")
-    );
+// router.get('/:id/get', taskController.get);
 
-    app.post('/api/task/:uid/delete',
-        answer("POST /task/:uid/delete")
-    );
-
-};
+module.exports = router;
