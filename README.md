@@ -37,7 +37,7 @@ Comment {
     text: string
 }
 
-## Routes
+## [obsolete] Routes
 
 (list, get, new, edit, remove)
 
