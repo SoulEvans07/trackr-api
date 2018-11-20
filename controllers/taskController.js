@@ -10,7 +10,7 @@ exports.list = async function (req, res, next) {
 exports.new = async function (req, res, next) {
     let task = new Task({
         name: entities.encode(req.body.name),
-        is_done: req.body.is_done
+        assigner: res.currentUser
     });
 
     task = await task.save();

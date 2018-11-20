@@ -8,6 +8,7 @@ const TaskSchema = new Schema({
     name: String,
     description: String,
     assignee: { type: ObjectId, ref: 'User' },
+    assigner: { type: ObjectId, ref: 'User' },
     project: { type: ObjectId, ref: 'Project' },
     due_date: Date,
     comments: { type: ObjectId, ref: 'Comment' },
