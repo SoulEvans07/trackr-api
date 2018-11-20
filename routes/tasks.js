@@ -10,8 +10,8 @@ router.post('/new', taskController.new);
 
 router.post('/:id/update', taskController.update);
 
-// router.delete('/:id/delete', taskController.delete);
+router.delete('/:id/delete', taskController.delete);
 
-// router.get('/:id/get', taskController.get);
+router.get('/:id/get', taskController.get);
 
 module.exports = router;
