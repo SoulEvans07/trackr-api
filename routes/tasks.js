@@ -4,14 +4,29 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.get('/list', taskController.list);
+router.get('/list',
+    authController.authenticate,
+    taskController.list
+);
 
-router.post('/new', taskController.new);
+router.post('/new',
+    authController.authenticate,
+    taskController.new
+);
 
-router.post('/:id/update', taskController.update);
+router.post('/:id/update',
+    authController.authenticate,
+    taskController.update
+);
 
-router.delete('/:id/delete', taskController.delete);
+router.delete('/:id/delete',
+    authController.authenticate,
+    taskController.delete
+);
 
-router.get('/:id/get', taskController.get);
+router.get('/:id/get',
+    authController.authenticate,
+    taskController.get
+);
 
 module.exports = router;
