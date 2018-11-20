@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const entities = require('html-entities').AllHtmlEntities;
 const Task = require('../models/taskModel');
 

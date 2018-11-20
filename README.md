@@ -34,8 +34,9 @@ Team {
 Comment {
 ​    \_id: int,
 ​    author: User,
+​    text: string,
 ​    datetime: DateTime,
-​    text: string
+    modified: Boolean
 }
 
 ## [obsolete] Routes
