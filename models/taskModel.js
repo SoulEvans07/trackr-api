@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const StateEnum = require('./stateEnum');
 
-var TaskSchema = new Schema({
+const TaskSchema = new Schema({
     name: String,
     description: String,
     assignee: { type: ObjectId, ref: 'User' },

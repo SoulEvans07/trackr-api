@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-var ProjectSchema = new Schema({
-    // TODO: make Project model
+const ProjectSchema = new Schema({
     name: String,
+    owner: { type: ObjectId, ref: 'User' },
+    team: { type: ObjectId, ref: 'Team' },
     tasks: { type: ObjectId, ref: 'Task' }
 });
 
