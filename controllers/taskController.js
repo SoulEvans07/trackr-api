@@ -36,6 +36,8 @@ exports.update = async function (req, res, next) {
         return res.status(400).send('No task with id: ' + req.params.id);
     }
 
+    // TODO: sanity checks
+    // TODO: all attribute
     task.name = req.body.name;
     task.state = req.body.state;
 
