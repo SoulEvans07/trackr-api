@@ -2,7 +2,7 @@ const entities = require('html-entities').AllHtmlEntities;
 const Task = require('../models/taskModel');
 
 exports.list = async function (req, res, next) {
-    let tasks = await Task.find().exec();
+    let tasks = await Task.find({assigner: res.currentUser}).exec();
 
     return res.status(200).send(tasks);
 };
