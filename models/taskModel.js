@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const StateEnum = require('./stateEnum');
-
 const TaskSchema = new Schema({
+    index: Number,
     name: String,
     description: String,
     assignee: { type: ObjectId, ref: 'User' },
@@ -12,8 +11,7 @@ const TaskSchema = new Schema({
     project: { type: ObjectId, ref: 'Project' },
     due_date: Date,
     comments: { type: ObjectId, ref: 'Comment' },
-
-    state: StateEnum
+    is_done: Boolean
 
     // TODO: attatchments: File[]
 });
