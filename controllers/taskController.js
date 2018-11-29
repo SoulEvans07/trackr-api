@@ -1,22 +1,41 @@
 const entities = require('html-entities').AllHtmlEntities;
+const UserListView = require('../models/userListViewModel');
 const Task = require('../models/taskModel');
 
 exports.list = async function (req, res, next) {
-    let tasks = await Task.find({ assigner: res.currentUser }).exec();
+    let view = await UserListView.findOne({user: res.currentUser}).exec();
+    // TODO: move to user creation
+    if(!view){
+        view = new UserListView({
+            user: res.currentUser,
+            project: undefined,
+            list: []
+        });
+
+        await view.save();
+    }
+    let tasks = await Task.find({ assigner: res.currentUser }).populate("assignee").exec();
+
+    tasks.forEach(task => {
+        task.index = findIndex(task, view.list);
+    });
 
     return res.status(200).send(tasks);
 };
 
 exports.new = async function (req, res, next) {
+    let view = await UserListView.findOne({user: res.currentUser}).exec();
     let task = new Task({
-        index: req.body.index,
         name: entities.encode(req.body.name),
         assigner: res.currentUser
     });
 
-    console.log("new on " + task.index);
-    await updateIndicies(task.index, 1);
+    console.log("new on " + req.body.index);
     task = await task.save();
+
+    view.list.splice(req.body.index, 0, task);
+    await view.save();
+    task.index = req.body.index;
 
     return res.status(200).send(task);
 };
@@ -40,7 +59,6 @@ exports.update = async function (req, res, next) {
 
     // TODO: sanity checks
     // TODO: all attribute
-    // task.index = req.body.index;
     task.name = entities.encode(req.body.name);
     task.is_done = req.body.is_done;
 
@@ -50,25 +68,27 @@ exports.update = async function (req, res, next) {
 };
 
 exports.delete = async function (req, res, next) {
+    let view = await UserListView.findOne({user: res.currentUser}).exec();
     let task = await Task.findById(req.params.id).exec();
 
     if (!task) {
         return res.status(400).send('No task with id: ' + req.params.id);
     }
 
-    console.log("delete " + task.index);
     await task.delete();
-    await updateIndicies(task.index, -1);
+
+    let index = findIndex(task, view.list);
+    console.log("delete " + index);
+    view.list.splice(index, 1);
+    await view.save();
 
     return res.status(200).send();
 };
 
-
-const updateIndicies = async function (start, mov) {
-    let target = await Task.find({ index: { $gte: start } }).exec();
-    target.asyncForEach(async task => {
-        console.log("moved: " + task.index + " " + (task.index+mov));
-        task.index += mov;
-        await task.save();
-    })
+const findIndex = function(task, list){
+    let id = String(task._id);
+    for(let i = 0; i < list.length; i++){
+        if(String(list[i]._id) === id)
+            return i;
+    }
 };
