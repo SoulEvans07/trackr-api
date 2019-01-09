@@ -13,7 +13,7 @@ const { logs } = require('./vars');
 
 const app = express();
 
-// app.use(morgan(logs));
+app.use(morgan(logs));
 
 app.use(cors());
 

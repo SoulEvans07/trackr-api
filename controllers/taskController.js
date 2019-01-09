@@ -59,7 +59,8 @@ exports.update = async function (req, res, next) {
 
     // TODO: sanity checks
     // TODO: all attribute
-    task.name = entities.encode(req.body.name);
+    task.name = req.body.name;
+    task.description = req.body.description;
     task.is_done = req.body.is_done;
 
     task = await task.save();
