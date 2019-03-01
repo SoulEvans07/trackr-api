@@ -14,7 +14,9 @@ exports.list = async function (req, res, next) {
 
         await view.save();
     }
-    let tasks = await Task.find({ assigner: res.currentUser }).populate("assignee").exec();
+    let tasks = await Task.find({ assigner: res.currentUser })
+        .populate("assignee")
+        .populate("project").exec();
 
     tasks.forEach(task => {
         task.index = findIndex(task, view.list);

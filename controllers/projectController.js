@@ -12,6 +12,7 @@ exports.new = async function (req, res, next) {
 
     let project = new Project({
         name: entities.encode(req.body.name),
+        color: entities.encode(req.body.color),
         owner: res.currentUser,
         team: req.body.team,
         tasks: []
@@ -42,6 +43,7 @@ exports.update = async function (req, res, next) {
     // TODO: sanity checks
     // TODO: all attribute
     project.name = req.body.name;
+    project.color = entities.encode(req.body.color);
 
     project = await project.save();
 
